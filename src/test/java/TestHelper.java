@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -83,11 +84,44 @@ public class TestHelper {
     }
 
 
-    void deleteUser() {
+    void deleteUser(String user) {
         goToPage("Admin");
         waitForElementById("Admin");
-        WebElement deleteLink = driver.findElement(By.xpath("//p[@id='seitse']/a[@data-method='delete']"));
+        WebElement deleteLink = driver.findElement(By.xpath("//p[@id='" + user + "']/a[@data-method='delete']"));
         deleteLink.click();
+    }
+
+    void addProduct(String title, String description, String productType, String price) {
+        goToPage("Products");
+        WebElement newProductLink = driver.findElement(By.xpath("//p[@id='new_product_div']/a[@href='/products/new']"));
+        newProductLink.click();
+
+        driver.findElement(By.id("product_title")).sendKeys(title);
+        driver.findElement(By.id("product_description")).sendKeys(description);
+
+        WebElement productTypeDropdown = driver.findElement(By.id("product_prod_type"));
+        Select select = new Select(productTypeDropdown);
+        select.selectByVisibleText(productType);
+
+        driver.findElement(By.id("product_price")).sendKeys(price);
+
+        WebElement createProductLink = driver.findElement(By.xpath("//input[@name='commit']"));
+        createProductLink.click();
+        System.out.println("Item added.");
+    }
+
+    void deleteProduct(String title) {
+        goToPage("Products");
+        WebElement deleteLink = driver.findElement(By.xpath("//tr[@id='" + title + "']/td[@class='list_actions']/a[@data-method='delete']"));
+        deleteLink.click();
+        System.out.println("Item deleted");
+    }
+
+    void getProductToEdit(String title) {
+        goToPage("Products");
+        WebElement editLink = driver.findElement(By.xpath("//tr[@id='" + title + "']/td[@class='list_actions']/a[text()='Edit']"));
+        editLink.click();
+        System.out.println("Item edited");
     }
 
     void logout(){
