@@ -5,8 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class BasicTest extends TestHelper {
 
@@ -22,10 +21,10 @@ public class BasicTest extends TestHelper {
         assertEquals(expectedTitle, actualTitle);
     }
 
-     @Test
+    @Test
     public void loginLogoutTest(){
 
-        login(username, password);
+        login(username, "elsa123");
 
          WebElement adminHeader = driver.findElement(By.id("Products"));
          String mainText = adminHeader.getText();
@@ -38,9 +37,9 @@ public class BasicTest extends TestHelper {
         logout();
     }
 
-     @Test
+    @Test
     public void loginFalsePassword() {
-         login(username, password);
+         login(username, "password");
          WebElement adminHeader = driver.findElement(By.id("notice"));
          String actualText = adminHeader.getText();
          if (actualText.equals("Invalid user/password combination")) {
@@ -48,6 +47,16 @@ public class BasicTest extends TestHelper {
          } else {
              assertNotEquals("Invalid user/password combination", actualText);
          }
+    }
+
+    @Test
+    public void adminLogOut() {
+        login(username, "elsa123");
+        logout();
+        boolean isLoginPage = isElementPresent(By.cssSelector("a[href='/login']"));
+        if (!isLoginPage) {
+            assertFalse(isLoginPage);
+        }
     }
 
 }

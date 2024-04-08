@@ -73,12 +73,11 @@ public class TestHelper {
         // ...
     }
 
-    boolean logout(){
+    void logout(){
         WebElement logout = driver.findElement(By.linkText("Logout"));
         logout.click();
 
         waitForElementById("Admin");
-        return true;
     }
 
     @After
