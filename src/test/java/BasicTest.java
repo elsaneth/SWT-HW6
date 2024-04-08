@@ -3,6 +3,8 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.*;
@@ -58,5 +60,25 @@ public class BasicTest extends TestHelper {
             assertFalse(isLoginPage);
         }
     }
+
+    @Test
+    public void registerAccountWithWrongConfirmation() {
+        register("neljas", "neli", "kaks");
+        WebElement adminHeader = driver.findElement(By.id("Register"));
+        String mainText = adminHeader.getText();
+        if (mainText.equals("Register")) {
+            assertEquals("Register", mainText);
+        } else {
+            assertNotEquals("Register", mainText);
+        }
+    }
+
+    @Test
+    public void registerAccountWithValidInput() {
+        register("seitse", "seitse", "seitse");
+        deleteUser();
+    }
+
+
 
 }

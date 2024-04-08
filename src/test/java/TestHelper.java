@@ -8,6 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TestHelper {
@@ -65,18 +66,33 @@ public class TestHelper {
         driver.findElement(By.linkText("Login")).click();
 
         driver.findElement(By.id("name")).sendKeys(username);
-
-        // ...
+        driver.findElement(By.id("password")).sendKeys(password);
 
         By loginButtonXpath = By.xpath("//input[@value='Login']");
-        // click on the button
-        // ...
+        driver.findElement(loginButtonXpath).click();
+    }
+
+    void register(String username, String password, String confirmation) {
+        driver.get(baseUrlAdmin);
+        driver.findElement(By.linkText("Register")).click();
+        driver.findElement(By.id("user_name")).sendKeys(username);
+        driver.findElement(By.id("user_password")).sendKeys(password);
+        driver.findElement(By.id("user_password_confirmation")).sendKeys(confirmation);
+        By loginButtonXpath = By.xpath("//input[@value='Create User']");
+        driver.findElement(loginButtonXpath).click();
+    }
+
+
+    void deleteUser() {
+        goToPage("Admin");
+        waitForElementById("Admin");
+        WebElement deleteLink = driver.findElement(By.xpath("//p[@id='seitse']/a[@data-method='delete']"));
+        deleteLink.click();
     }
 
     void logout(){
         WebElement logout = driver.findElement(By.linkText("Logout"));
         logout.click();
-
         waitForElementById("Admin");
     }
 
