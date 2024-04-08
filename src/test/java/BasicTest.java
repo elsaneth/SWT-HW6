@@ -1,10 +1,6 @@
-import com.sun.tools.javac.Main;
-import junit.framework.TestCase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Objects;
 
@@ -106,28 +102,27 @@ public class BasicTest extends TestHelper {
     public void editProductTitleWithValidInput() {
         login(username, password);
         String oldTitle = "Web Application Testing Book";
-        getProductToEdit(oldTitle);
-        WebElement titleInput = driver.findElement(By.id("product_title"));
+        editProductTitle(oldTitle, "New Title");
+        verifyNotice();
+        editProductTitle("New Title", oldTitle);
+    }
 
-        String newTitle = "New Title";
+    private void editProductTitle(String oldTitle, String newTitle) {
+        getProductToEdit(oldTitle);
+
+        WebElement titleInput = driver.findElement(By.id("product_title"));
         titleInput.clear();
         titleInput.sendKeys(newTitle);
+
         WebElement updateProduct = driver.findElement(By.xpath("//input[@data-disable-with='Update Product']"));
         updateProduct.click();
+    }
 
+    private void verifyNotice() {
         WebElement notice = driver.findElement(By.id("notice"));
         String noticeText = notice.getText();
         assertEquals("Product was successfully updated.", noticeText);
-
-        WebElement editButton = driver.findElement(By.xpath("//div[@class='back_button']/a[text()='Edit']"));
-        editButton.click();
-
-        // change back
-        WebElement titleInput2 = driver.findElement(By.id("product_title"));
-        titleInput2.clear();
-        titleInput2.sendKeys(oldTitle);
-        WebElement updateProduct2 = driver.findElement(By.xpath("//input[@data-disable-with='Update Product']"));
-        updateProduct2.click();
     }
+
 
 }
