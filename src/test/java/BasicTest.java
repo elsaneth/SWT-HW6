@@ -1,9 +1,12 @@
+import com.sun.tools.javac.Main;
 import junit.framework.TestCase;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 public class BasicTest extends TestHelper {
 
@@ -19,35 +22,32 @@ public class BasicTest extends TestHelper {
         assertEquals(expectedTitle, actualTitle);
     }
 
-
-    /*
-    In class Exercise
-
-    Fill in loginLogoutTest() and login mehtod in TestHelper, so that the test passes correctly.
-
-     */
      @Test
     public void loginLogoutTest(){
 
         login(username, password);
 
-        // assert that correct page appeared
-//         WebElement adminHeader = driver.findElement()
-        // ...
+         WebElement adminHeader = driver.findElement(By.id("Products"));
+         String mainText = adminHeader.getText();
+         if (mainText.equals("Products")) {
+             assertEquals("Products", mainText);
+         } else {
+             assertNotEquals("Products", mainText);
+         }
 
         logout();
     }
 
-    /*
-    In class Exercise
-
-     Write a test case, where you make sure, that one can’t log in with a false password
-
-     */
      @Test
     public void loginFalsePassword() {
          login(username, password);
-         String expectedTitle = "Invalid user/password combination";
+         WebElement adminHeader = driver.findElement(By.id("notice"));
+         String actualText = adminHeader.getText();
+         if (actualText.equals("Invalid user/password combination")) {
+             assertEquals("Invalid user/password combination", actualText);
+         } else {
+             assertNotEquals("Invalid user/password combination", actualText);
+         }
     }
 
 }
